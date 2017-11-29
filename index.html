@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Nova+Square" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="kontener">
+
+        <input type="text" id="ekran" name="ekran" readonly>
+
+        <button class="btn" onclick="wyczyscEkran()">C</button>
+
+        <button class="btn" onclick="pobierzWartosc(value)" value="(">(</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value=")">)</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="/">/</button>
+
+        <button class="btn" onclick="pobierzWartosc(value)" value="7">7</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="8">8</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="9">9</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="*">*</button>
+
+        <button class="btn" onclick="pobierzWartosc(value)" value="4">4</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="5">5</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="6">6</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="-">-</button>
+
+        <button class="btn" onclick="pobierzWartosc(value)" value="1">1</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="2">2</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="3">3</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value="+">+</button>
+
+        <button class="btn" onclick="pobierzWartosc(value)" value="0">0</button>
+        <button class="btn" onclick="pobierzWartosc(value)" value=".">.</button>
+
+        <button class="btn" onclick="pokazWynik()">=</button>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
