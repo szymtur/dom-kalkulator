@@ -24,7 +24,6 @@
     background-color: #4e708c;
   }
 
-
 #kontener .btn{
     width: 90px;
     height: 50px;
@@ -46,7 +45,11 @@
   
 #kontener .btn:last-child {
     width: 205px;
-    background-color: red;
+    background-color: #d30000;
+}
+
+#kontener #btnClear {
+    background-color: rgb(118, 88, 18);
 }
 
 #kontener .btn:hover {
