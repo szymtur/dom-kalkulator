@@ -3,43 +3,45 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Calculator</title>
     <link href="https://fonts.googleapis.com/css?family=Nova+Square" rel="stylesheet">
+    <link rel="shortcut icon" href="/icon/calculator.png">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <div id="kontener">
+    <div id="container">
+        <div id="calculator">
 
-        <input type="text" id="ekran" name="ekran" readonly>
+            <input type="text" id="display" name="display" value="0" readonly>
 
-        <button class="btn" onclick="wyczyscEkran()" id="btnClear">C</button>
+            <button class="btn" onclick="clearDisplay()" value="c">C</button>
 
-        <button class="btn" onclick="pobierzWartosc(value)" value="(">(</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value=")">)</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="/">/</button>
+            <button class="btn" onclick="getValue(value)" value="(">(</button>
+            <button class="btn" onclick="getValue(value)" value=")">)</button>
+            <button class="btn" onclick="getValue('/')" value="/">÷</button>
 
-        <button class="btn" onclick="pobierzWartosc(value)" value="7">7</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="8">8</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="9">9</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="*">*</button>
+            <button class="btn" onclick="getValue(7)" value="7">7</button>
+            <button class="btn" onclick="getValue(8)" value="8">8</button>
+            <button class="btn" onclick="getValue(9)" value="9">9</button>
+            <button class="btn" onclick="getValue('*')" value="*">x</button>
 
-        <button class="btn" onclick="pobierzWartosc(value)" value="4">4</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="5">5</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="6">6</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="-">-</button>
+            <button class="btn" onclick="getValue(4)" value="4">4</button>
+            <button class="btn" onclick="getValue(5)" value="5">5</button>
+            <button class="btn" onclick="getValue(6)" value="6">6</button>
+            <button class="btn" onclick="getValue(value)" value="-">-</button>
 
-        <button class="btn" onclick="pobierzWartosc(value)" value="1">1</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="2">2</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="3">3</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value="+">+</button>
+            <button class="btn" onclick="getValue(1)" value="1">1</button>
+            <button class="btn" onclick="getValue(2)" value="2">2</button>
+            <button class="btn" onclick="getValue(3)" value="3">3</button>
+            <button class="btn" onclick="getValue('+')" value="+">+</button>
 
-        <button class="btn" onclick="pobierzWartosc(value)" value="0">0</button>
-        <button class="btn" onclick="pobierzWartosc(value)" value=".">.</button>
+            <button class="btn" onclick="getValue(0)" value="0">0</button>
+            <button class="btn" onclick="getValue('.')" value=".">.</button>
 
-        <button class="btn" onclick="pokazWynik()">=</button>
+            <button class="btn" value="=">=</button>
+        </div>
     </div>
-
     <script src="js/main.js"></script>
 </body>
 

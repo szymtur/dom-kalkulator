@@ -1,5 +1,10 @@
-#kontener {
-    width: 455px;
+#container{
+    margin: 30px auto;
+    width: 455px;   
+}
+
+#container #calculator {
+    width: 100%;   
     border-radius: 10px;
     border-style: solid;  
     border-color: #000;
@@ -9,7 +14,7 @@
     box-shadow: 5px 5px 5px #000;
   }
 
-#kontener #ekran {
+#container #calculator #display {
     width: 430px;
     height: 50px;
     border-style: solid;  
@@ -24,7 +29,7 @@
     background-color: #4e708c;
   }
 
-#kontener .btn{
+#container #calculator .btn{
     width: 90px;
     height: 50px;
     margin-right: 10px;
@@ -43,16 +48,16 @@
     transition: background-color 200ms;
   }
   
-#kontener .btn:last-child {
+#container #calculator .btn:last-child {
     width: 205px;
     background-color: #d30000;
 }
 
-#kontener #btnClear {
+#container #calculator .btn:nth-child(2) {
     background-color: rgb(118, 88, 18);
 }
 
-#kontener .btn:hover {
+#container #calculator .btn:hover {
   background-color: #4e708c;
   color: #fff;
   border-color: #fff;
