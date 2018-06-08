@@ -81,7 +81,10 @@ function output(){
                 display.value = "Error";
             }
         }
-         else{
+        else if(display.value.indexOf("Error") > -1){
+            display.value = "Error";
+        }
+        else{
             var result = eval(display.value);
             console.log(result);
             
@@ -91,7 +94,7 @@ function output(){
             else if (isNaN(result) == true) {
                 display.value = "Error";
             }
-            else  if (result == "function") {
+            else if (result == "function") {
                 display.value = "Error";
             }
             else {
