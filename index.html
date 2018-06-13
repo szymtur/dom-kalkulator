@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Calculator</title>
     <link href="https://fonts.googleapis.com/css?family=Nova+Square" rel="stylesheet">
-    <link rel="shortcut icon" href="/icon/calculator.png">
+    <link rel="shortcut icon" href="/icon/calc-icon.png">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -15,31 +15,31 @@
 
             <input type="text" id="display" name="display" value="0" readonly>
 
-            <button class="btn" onclick="clearDisplay()" value="c">C</button>
+            <button class="btn clear ce" value="ce">CE</button>
 
-            <button class="btn" onclick="getValue(value)" value="(">(</button>
-            <button class="btn" onclick="getValue(value)" value=")">)</button>
-            <button class="btn" onclick="getValue('/')" value="/">÷</button>
+            <button class="btn number" onclick="getValue(value)" value="(">(</button>
+            <button class="btn number" onclick="getValue(value)" value=")">)</button>
+            <button class="btn operator" onclick="getValue('/')" value="/">÷</button>
 
-            <button class="btn" onclick="getValue(7)" value="7">7</button>
-            <button class="btn" onclick="getValue(8)" value="8">8</button>
-            <button class="btn" onclick="getValue(9)" value="9">9</button>
-            <button class="btn" onclick="getValue('*')" value="*">x</button>
+            <button class="btn number" onclick="getValue(7)" value="7">7</button>
+            <button class="btn number" onclick="getValue(8)" value="8">8</button>
+            <button class="btn number" onclick="getValue(9)" value="9">9</button>
+            <button class="btn operator" onclick="getValue('*')" value="*">x</button>
 
-            <button class="btn" onclick="getValue(4)" value="4">4</button>
-            <button class="btn" onclick="getValue(5)" value="5">5</button>
-            <button class="btn" onclick="getValue(6)" value="6">6</button>
-            <button class="btn" onclick="getValue(value)" value="-">-</button>
+            <button class="btn number" onclick="getValue(4)" value="4">4</button>
+            <button class="btn number" onclick="getValue(5)" value="5">5</button>
+            <button class="btn number" onclick="getValue(6)" value="6">6</button>
+            <button class="btn operator" onclick="getValue('-')" value="-">-</button>
 
-            <button class="btn" onclick="getValue(1)" value="1">1</button>
-            <button class="btn" onclick="getValue(2)" value="2">2</button>
-            <button class="btn" onclick="getValue(3)" value="3">3</button>
-            <button class="btn" onclick="getValue('+')" value="+">+</button>
+            <button class="btn number" onclick="getValue(1)" value="1">1</button>
+            <button class="btn number" onclick="getValue(2)" value="2">2</button>
+            <button class="btn number" onclick="getValue(3)" value="3">3</button>
+            <button class="btn operator" onclick="getValue('+')" value="+">+</button>
 
-            <button class="btn" onclick="getValue(0)" value="0">0</button>
-            <button class="btn" onclick="getValue('.')" value=".">.</button>
+            <button class="btn number" onclick="getValue(0)" value="0">0</button>
+            <button class="btn number" onclick="getValue('.')" value=".">.</button>
 
-            <button class="btn" value="=">=</button>
+            <button class="btn result" value="=">=</button>
         </div>
     </div>
     <script src="js/main.js"></script>

@@ -1,145 +1,85 @@
-var display = document.getElementById('display');
-var operators = ['', '', '+', '-', '*', '/', '.'];
+let display = document.getElementById('display');
+let allKeys = document.querySelectorAll('.btn');
+let numKeys = document.querySelectorAll('.number');
+let operKeys = document.querySelectorAll('.operator');
+let resultKey = document.querySelector('.result');
+let clearKey = document.querySelector('.clear');
+let decimalKey = document.querySelector('.btn[value = "."]');
+let operators = ['+', '-', '*', '/'];
 
 
-//---------- FUNKCJA POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN --------------
-function getValue(btn) {
-    var lastChar = display.value[display.value.length-1];
+/* ZDARZENIE NA PRZUCISKU " = " */
+resultKey.addEventListener('click', function(){
+    blockNumKeys();
+    changeToAC();
+    result();
+});
+
+
+/* ZDARZENIE NA PRZYCISKU " . " */
+decimalKey.addEventListener('click', function(){
+    blockDecimal();
+});
+
+
+/* ZDARZENIE NA PRZYCISKACH FUNKCYJNYCH */
+for(let i=0; i<operKeys.length; i++){
+    operKeys[i].addEventListener('click', function(){
+        unblockAllKeys();
+        changeToCE();
+    });
+}
+
+
+/* ZDARZENIE NA PRZYCISKU " CE " */
+clearKey.addEventListener('click', function(){
+     if(clearKey.className.indexOf('ac') > -1){
+        unblockAllKeys();
+        allClear();
+        changeToCE();        
+    }
+    else if(clearKey.className.indexOf('ce') > -1 ){
+        clearEnter();
+    }
+})
+
+
+/*POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN*/
+function getValue(keyVal) {
+    let lastChar = display.value[display.value.length-1];
     
-    //blokuje możliwość wpisania kilkukrotnie znaku " + - * / ."
-    if (btn == '-' || btn == '+' || 
-        btn == '*' || btn == '/' || btn == '.'){
+    //blokuje możliwość wpisania kilkukrotnie znaku " + - * / "
+    if (keyVal == '-' || keyVal == '+' || keyVal == '*' || keyVal == '/' ){
         
         if(operators.indexOf(lastChar) > -1)
             display.value = display.value.replace(/.$/, '');
     }
     
-    //zamienia defaultowe "0" z ekranu na cyfrę lub "-" 
-    //lub dodaje do "0" znaki " + - * / . "
+    //zamienia defaultowe "0" z ekranu na cyfrę lub dodaje do "0" znaki " + - * / . "
     if(display.value === "0"){
-        if( btn == '+' || btn == '*' || 
-            btn == '/' || btn == '.' ){
-            display.value = "0";
+        if( keyVal == '+' || keyVal == '*' || keyVal =='-' ||
+            keyVal == '/' || keyVal == '.' ){
+            display.value += keyVal ;
         }
         else{
-            display.value = "";
+            display.value = keyVal;
             }
         }
-    //wypisuje kliknięte klawisze na ekran
-    display.value += btn;
-}
-
-
-//-------------------- FUNKCJA CZYSZCZĄCA EKRAN -----------------------------------
-function clearDisplay() {
-    display.value = "0";
-}
-
-
-//-------------------- FUNKCJA WALIDUJĄCA I ZWRACAJĄCA WYNIK ----------------------
-function output(){
-    var resultBtn = document.querySelector(".btn[value = '=']");
-    
-    resultBtn.addEventListener("click", function(){
-        
-        //sprawdza czy na końcu jest znak " + - * / ." jeśli tak to go usuwa
-        var lastChar = display.value[display.value.length-1];
-        if(operators.indexOf(lastChar) > -1){
-            display.value = display.value.replace(/.$/, '');
-        }
-        
-        //sprawdza poprawność wprowadzonego ciągu znaków
-        if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1){
-            var regular = /(\(+)((\-|\.)?)((\d+\.\d+)|(\d+))((\-|\+|\*|\/)((\d+\.\d+)|(\d+)))*(\)+)/;
-            var error_1 = /(\)+)(\.)(\d+|\(+|\)+)/;     //(X).X
-            var error_2 = /((\d+\.\d+)|(\d+))(\(+)/;    //X(
-            var error_4 = /(\)+)((\d+\.\d+)|(\d+))/;    //)X
-            var error_3 = /(\(+)(\)+)/;                 //()
-            
-            if(checkBrackets(display.value) == true){
-                
-                if (regular.test(display.value) == false) {
-                    display.value = "Error";
-                }
-                else if(error_1.test(display.value) == true){
-                    display.value = "Error";
-                }
-                else if(error_2.test(display.value) == true){
-                    display.value = "Error";
-                }
-                else if(error_3.test(display.value) == true){
-                    display.value = "Error";
-                }
-                else if(error_4.test(display.value) == true){
-                    display.value = "Error";
-                }                 
-                else {
-                    display.value = eval(display.value);
-                }
-            }
-            else{
-                display.value = "Error";
-            }
-        }
-        else if(display.value.indexOf("Error") > -1){
-            display.value = "Error";
-        }
-        else{
-            var result = eval(display.value);
-            console.log(result);
-            
-            if (result == "Infinity" || result == "-Infinity") {
-                display.value = "Error";
-            } 
-            else if (isNaN(result) == true) {
-                display.value = "Error";
-            }
-            else if (result == "function") {
-                display.value = "Error";
-            }
-            else {
-                display.value = result;
-            }
-        }
-    });
-} 
-output();
-
-
-//-------------------- BLOKOWANIE PRZYCISKU DZIESIĘTNYCH --------------------------
-function checkDecimal(){
-    let keys = document.querySelectorAll('.btn');
-
-    for (let i = 0; i < keys.length; i++) {
-
-        keys[i].addEventListener('click', function () {
-
-            if (keys[i].value == '.') {
-                
-                    keys[i].disabled = 'true';
-                }
-
-            if (keys[i].value == 'c' || keys[i].value == '=' || 
-                keys[i].value == '+' || keys[i].value == '-' ||
-                keys[i].value == '*' || keys[i].value == '/' ||
-                keys[i].value == '(' || keys[i].value == ')') {
-
-                    keys[keys.length-2].disabled = false;
-                }
-        });
+    else{
+        display.value += keyVal;
     }
-} checkDecimal();
+}
 
 
-//----- FUNKCJA SPRAWDZAJĄCA ILOŚĆ NAWIASÓW OTWIERAJĄCYCH I ZAMYKAJĄCYCH ----------
-function checkBrackets(str) {
+/* SPRAWDZA CZY ILOŚĆ NAWIASÓW OTWIERAJĄCYCH I ZAMYKAJĄCYCH JEST TAKA SAMA */
+function checkBrackets(display) {
     counter_1 = 0;
     counter_2 = 0;
 
-    for (let i = 0; i < str.length; i++) {
-        if (str[i] == '(') {
+    for (let i = 0; i < display.length; i++) {
+        if (display[i] == '(') {
             counter_1++
-        } else if (str[i] == ')') {
+        } else if (display[i] == ')') {
             counter_2++
         }
     }
@@ -151,50 +91,176 @@ function checkBrackets(str) {
 }
 
 
-//-------------------- OBSŁUGA KLAWIATURY -----------------------------------------
-document.addEventListener("keypress", function(event) {
-    switch (event.keyCode) {
-        case 48: // 0
-            getValue(event.key);
-        break;    
-        case 49: // 1
-            getValue(event.key);
-        break;
-        case 50: // 2
-            getValue(event.key);
-        break;
-        case 51: // 3
-            getValue(event.key);
-        break;
-        case 52: // 4
-            getValue(event.key);
-        break;
-        case 53: // 5
-            getValue(event.key);
-        break;
-        case 54: // 6
-            getValue(event.key);
-        break;
-        case 55: // 7
-            getValue(event.key);
-        break;
-        case 56: // 8
-            getValue(event.key);
-        break;
-        case 57: // 9
-            getValue(event.key);
-        break;
-        case 41: // )
-            getValue(event.key);
-        break;
-        case 40: // (
-            getValue(event.key);
-        break;
+/* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM AC), GDY NA EKRANIE POJAWI SIĘ ERROR */
+function blockAllKeys(display){
+    if(display == 'Error'){
+        for (let i=1; i<allKeys.length; i++){
+            allKeys[i].disabled = true;
+        }
     }
-});
+}
 
 
-//obsługa klawiszy " + - * / = . , " kalkulatora za pomocą przycisków klawiatury
+/* BLOKUJE KLAWISZE NUMERYCZNYE PO NACIŚNIĘCIU " = " */
+function blockNumKeys(){
+    for (let i=0; i<numKeys.length; i++){
+        numKeys[i].disabled = true;
+    }
+}
+
+
+/* BLOKUJE PRZYCISK "." PO PIERWSZYM NACIŚNIĘCIU*/
+function blockDecimal() {
+    if (display.value.indexOf('.') > -1) {
+        decimalKey.disabled = true;
+    }
+}
+
+
+/* ODBLOKOWUJE WSZYSTKIE KLAWISZE */
+function unblockAllKeys(){
+    for (let i=1; i<allKeys.length; i++){
+        allKeys[i].disabled = false;
+    }
+}
+ 
+
+/* FORMATUJE WYNIK, ŻEBY ZMIEŚCIŁ SIĘ NA EKRANIE */
+function resultLength(display){
+        let result = 0;
+        if(display.toString().length > 10){
+            result = display.toPrecision(10);
+        }
+        else{
+            result = display;
+        }
+        return result;
+}
+
+
+/* USUWA PO JEDNYM ZNAKU */
+function clearEnter() {
+    if(display.value.length > 1){
+        display.value = display.value.replace(/.$/, '');
+    }
+    else{
+        display.value = display.value.replace(/.$/, '0');
+    }
+}
+
+
+/* CZYŚCI CAŁY EKRAN */
+function allClear(){
+    display.value = '0';
+}
+
+
+/* ZMIENIA PRZYCISK "CE" NA "AC" */
+function changeToAC(){
+    clearKey.innerText = 'AC';
+    clearKey.classList.remove('ce');
+    clearKey.classList.add('ac');
+}
+
+
+/* ZMIENIA PRZYCISK "AC" NA "CE" */
+function changeToCE(){
+    clearKey.innerText = 'CE';
+    clearKey.classList.remove('ac');
+    clearKey.classList.add('ce');    
+}
+
+
+/*WALIDUJE WPROWADZONY CIĄG ZNAKÓW I ZWRACA WYNIK LUB ERROR */
+function result(){
+    //sprawdza czy na końcu jest znak " + - * /" jeśli tak to go usuwa
+    let lastChar = display.value[display.value.length-1];
+    if(operators.indexOf(lastChar) > -1){
+        display.value = display.value.replace(/.$/, '');
+    }
+    
+    //zamienia ")(" na ")*("
+    let reg = /\)\(/;
+    for(let i=0; i<display.value.length; i++){
+        if(reg.test(display.value) == true){
+            display.value = display.value.replace(/\)\(/g, ')*(');
+        }    
+    }
+    
+    //sprawdza poprawność wprowadzonego ciągu znaków i zwraca wynik lub "Error"
+    if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1){
+        if(checkBrackets(display.value) == true){
+            let regular = /(\(+)((\-|\+)?)((\d*\.\d+)|(\d+))((\-|\+|\*|\/)((\d*\.\d+)|(\d+)))*(\)+)/;
+            let error_1 = /(\)+)(\.)/;                  // ).
+            let error_2 = /(\.)(\(+|\)+)/;              // .)|(
+            let error_3 = /((\d+\.\d+)|(\d+))(\(+)/;    // X(
+            let error_4 = /(\)+)((\d+\.\d+)|(\d+))/;    // )X
+            let error_5 = /(\(+)(\)+)/;                 // ()
+            
+            if (regular.test(display.value) == false) {
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+            }
+            if(error_1.test(display.value) == true){
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+            }
+            else if(error_2.test(display.value) == true){
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+            }
+            else if(error_3.test(display.value) == true){
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+            }
+            else if(error_4.test(display.value) == true){
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+            }
+            else if(error_5.test(display.value) == true){
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+            }
+            else{
+                let result = eval(display.value);
+
+                if (result == "Infinity" || result == "-Infinity") {
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+                }
+                else if (isNaN(result) == true) {
+                    display.value = "Error";
+                    blockAllKeys(display.value);
+                }
+                else {
+                    display.value = resultLength(result);
+                }
+            }
+        }
+        else{
+            display.value = "Error";
+            blockAllKeys(display.value);    
+        }
+    }    
+    else{
+        let result = eval(display.value);
+                
+        if (result == "Infinity" || result == "-Infinity") {
+            display.value = "Error";
+            blockAllKeys(display.value);
+        }
+        else if (isNaN(result) == true) {
+            display.value = "Error";
+            blockAllKeys(display.value);
+        }
+        else {
+            display.value = resultLength(result);
+        }
+    }
+}
+
+
+/* OBSŁUGA KLAWISZY KALKULATORA ZA POMOCĄ KLAWIATURY */
 document.addEventListener("keypress", function(event) {
     if (event.keyCode === 43 ) {
         document.querySelector(".btn[value = '+']").click();
@@ -208,22 +274,57 @@ document.addEventListener("keypress", function(event) {
     if (event.keyCode === 47 ) {
         document.querySelector(".btn[value = '/']").click();
     }
-    if (event.keyCode === 13) {
-        document.querySelector(".btn[value = '=']").click();
-    }
     if (event.keyCode === 61) {
         document.querySelector(".btn[value = '=']").click();
     }
-    if (event.keyCode === 46 || event.keyCode === 44) {
+    if (event.keyCode === 46 || 
+        event.keyCode === 44) {
         document.querySelector(".btn[value = '.']").click();
+    }
+    if (event.keyCode === 40) {
+        document.querySelector(".btn[value = '(']").click();
+    }
+    if (event.keyCode === 41) {
+        document.querySelector(".btn[value = ')']").click();
+    }
+    if (event.keyCode === 48 ) {
+        document.querySelector(".btn[value = '0']").click();
+    }
+    if (event.keyCode === 49) {
+        document.querySelector(".btn[value = '1']").click();
+    }
+    if (event.keyCode === 50) {
+        document.querySelector(".btn[value = '2']").click();
+    }
+    if (event.keyCode === 51) {
+        document.querySelector(".btn[value = '3']").click();
+    }
+    if (event.keyCode === 52) {
+        document.querySelector(".btn[value = '4']").click();
+    }
+    if (event.keyCode === 53) {
+        document.querySelector(".btn[value = '5']").click();
+    }
+    if (event.keyCode === 54) {
+        document.querySelector(".btn[value = '6']").click();
+    }
+    if (event.keyCode === 55) {
+        document.querySelector(".btn[value = '7']").click();
+    }
+    if (event.keyCode === 56) {
+        document.querySelector(".btn[value = '8']").click();
+    }
+    if (event.keyCode === 57) {
+        document.querySelector(".btn[value = '9']").click();
     }
 });
 
-
-//obsługa klawisza " C " kalkulatora za pomocą przycisków " del/backspace/esc "
 document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13 ) {
+        document.querySelector(".btn[value = '=']").click();
+    }
     if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 27) {
-        document.querySelector(".btn[value = 'c']").click();
+        document.querySelector(".btn[value = 'ce']").click();
     }
 });
 
