@@ -1,4 +1,4 @@
-let display = document.getElementById('display');
+let display = document.querySelector('#display');
 let allKeys = document.querySelectorAll('.btn');
 let numKeys = document.querySelectorAll('.number');
 let operKeys = document.querySelectorAll('.operator');
@@ -8,40 +8,155 @@ let decimalKey = document.querySelector('.btn[value = "."]');
 let operators = ['+', '-', '*', '/'];
 
 
-/* ZDARZENIE NA PRZUCISKU " = " */
+/* ZDARZENIA NA PRZUCISKU " = " */
 resultKey.addEventListener('click', function(){
+    result();
     blockNumKeys();
     changeToAC();
-    result();
+    changeFontSize();
 });
 
 
-/* ZDARZENIE NA PRZYCISKU " . " */
+/* ZDARZENIA NA PRZYCISKU " . " */
 decimalKey.addEventListener('click', function(){
     blockDecimal();
 });
 
 
-/* ZDARZENIE NA PRZYCISKACH FUNKCYJNYCH */
+/* ZDARZENIA NA PRZYCISKACH FUNKCYJNYCH */
 for(let i=0; i<operKeys.length; i++){
     operKeys[i].addEventListener('click', function(){
         unblockAllKeys();
         changeToCE();
+        changeFontSize();
     });
+}
+
+
+/* ZDARZENIA NA PRZYCISKACH NUMERYCZNYCH */
+for(let i=0; i<numKeys.length; i++){
+    numKeys[i].addEventListener('click', function(){
+        changeFontSize();
+        blockDisplayLength();    
+    })
 }
 
 
 /* ZDARZENIE NA PRZYCISKU " CE " */
 clearKey.addEventListener('click', function(){
      if(clearKey.className.indexOf('ac') > -1){
-        unblockAllKeys();
-        allClear();
-        changeToCE();        
+         unblockAllKeys();
+         allClear();
+         changeToCE();
+         changeFontSize();
     }
     else if(clearKey.className.indexOf('ce') > -1 ){
+        unblockAllKeys();
         clearEnter();
+        changeFontSize();
     }
 })
+
+
+/* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM AC), GDY NA EKRANIE POJAWI SIĘ ERROR */
+function blockAllKeys(display){
+    if(display == 'Error'){
+        for (let i=1; i<allKeys.length; i++){
+            allKeys[i].disabled = true;
+        }
+    }
+}
+
+
+/* BLOKUJE KLAWISZE PO WYPISANIU WIĘCEJ NIŻ 20 ZNAKÓW */
+function blockDisplayLength(){
+    if(display.value.length >= 20){
+        for (let i=1; i<numKeys.length-1; i++){
+            numKeys[i].disabled = true;
+        }
+    }
+}
+
+
+/* BLOKUJE KLAWISZE NUMERYCZNYE PO NACIŚNIĘCIU " = " */
+function blockNumKeys(){
+    for (let i=0; i<numKeys.length; i++){
+        numKeys[i].disabled = true;
+    }
+}
+
+
+/* BLOKUJE KLAWISZ "." PO PIERWSZYM NACIŚNIĘCIU*/
+function blockDecimal() {
+    if (display.value.indexOf('.') > -1) {
+        decimalKey.disabled = true;
+    }
+}
+
+
+/* ODBLOKOWUJE WSZYSTKIE KLAWISZE */
+function unblockAllKeys(){
+    for (let i=1; i<allKeys.length; i++){
+        allKeys[i].disabled = false;
+    }
+}
+ 
+
+/* FORMATUJE WYNIK, ŻEBY ZMIEŚCIŁ SIĘ NA EKRANIE */
+function resultLength(display){
+        let result = 0;
+        if(display.toString().length > 15){
+            result = display.toPrecision(15);
+        }
+        else{
+            result = display;
+        }
+        return result;
+}
+
+
+/* CE - USUWA PO JEDNYM ZNAKU Z EKRANU */
+function clearEnter() {
+    if(display.value.length > 1){
+        display.value = display.value.replace(/.$/, '');
+    }
+    else{
+        display.value = display.value.replace(/.$/, '0');
+    }
+}
+
+
+/* AC - CZYŚCI CAŁY EKRAN */
+function allClear(){
+    display.value = '0';
+}
+
+
+/* ZMIENIA PRZYCISK "CE" NA "AC" */
+function changeToAC(){
+    clearKey.innerText = 'AC';
+    clearKey.classList.remove('ce');
+    clearKey.classList.add('ac');
+}
+
+
+/* ZMIENIA PRZYCISK "AC" NA "CE" */
+function changeToCE(){
+    clearKey.innerText = 'CE';
+    clearKey.classList.remove('ac') ;
+    clearKey.classList.add('ce');    
+}
+
+
+/* ZMIENIA WIELKOŚĆ CZCIONKI EKRANU PO WPISANIU 15 ZNAKÓW */
+function changeFontSize(){
+    if(display.value.length > 15){
+        display.style.fontSize = '30px';
+    }
+    else {
+        display.style.fontSize = '40px';
+    }
+}
 
 
 /*POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN*/
@@ -90,89 +205,9 @@ function checkBrackets(display) {
     }
 }
 
-
-/* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM AC), GDY NA EKRANIE POJAWI SIĘ ERROR */
-function blockAllKeys(display){
-    if(display == 'Error'){
-        for (let i=1; i<allKeys.length; i++){
-            allKeys[i].disabled = true;
-        }
-    }
-}
-
-
-/* BLOKUJE KLAWISZE NUMERYCZNYE PO NACIŚNIĘCIU " = " */
-function blockNumKeys(){
-    for (let i=0; i<numKeys.length; i++){
-        numKeys[i].disabled = true;
-    }
-}
-
-
-/* BLOKUJE PRZYCISK "." PO PIERWSZYM NACIŚNIĘCIU*/
-function blockDecimal() {
-    if (display.value.indexOf('.') > -1) {
-        decimalKey.disabled = true;
-    }
-}
-
-
-/* ODBLOKOWUJE WSZYSTKIE KLAWISZE */
-function unblockAllKeys(){
-    for (let i=1; i<allKeys.length; i++){
-        allKeys[i].disabled = false;
-    }
-}
- 
-
-/* FORMATUJE WYNIK, ŻEBY ZMIEŚCIŁ SIĘ NA EKRANIE */
-function resultLength(display){
-        let result = 0;
-        if(display.toString().length > 10){
-            result = display.toPrecision(10);
-        }
-        else{
-            result = display;
-        }
-        return result;
-}
-
-
-/* USUWA PO JEDNYM ZNAKU */
-function clearEnter() {
-    if(display.value.length > 1){
-        display.value = display.value.replace(/.$/, '');
-    }
-    else{
-        display.value = display.value.replace(/.$/, '0');
-    }
-}
-
-
-/* CZYŚCI CAŁY EKRAN */
-function allClear(){
-    display.value = '0';
-}
-
-
-/* ZMIENIA PRZYCISK "CE" NA "AC" */
-function changeToAC(){
-    clearKey.innerText = 'AC';
-    clearKey.classList.remove('ce');
-    clearKey.classList.add('ac');
-}
-
-
-/* ZMIENIA PRZYCISK "AC" NA "CE" */
-function changeToCE(){
-    clearKey.innerText = 'CE';
-    clearKey.classList.remove('ac');
-    clearKey.classList.add('ce');    
-}
-
-
 /*WALIDUJE WPROWADZONY CIĄG ZNAKÓW I ZWRACA WYNIK LUB ERROR */
 function result(){
+    
     //sprawdza czy na końcu jest znak " + - * /" jeśli tak to go usuwa
     let lastChar = display.value[display.value.length-1];
     if(operators.indexOf(lastChar) > -1){
@@ -239,7 +274,7 @@ function result(){
         }
         else{
             display.value = "Error";
-            blockAllKeys(display.value);    
+            blockAllKeys(display.value); 
         }
     }    
     else{
@@ -327,4 +362,5 @@ document.addEventListener("keydown", function(event) {
         document.querySelector(".btn[value = 'ce']").click();
     }
 });
+
 
