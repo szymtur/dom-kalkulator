@@ -2,8 +2,9 @@ let display = document.querySelector('#display');
 let allKeys = document.querySelectorAll('.btn');
 let numKeys = document.querySelectorAll('.number');
 let operKeys = document.querySelectorAll('.operator');
-let resultKey = document.querySelector('.result');
+let bracketsKeys = document.querySelectorAll('.bracket');
 let clearKey = document.querySelector('.clear');
+let resultKey = document.querySelector('.result');
 let decimalKey = document.querySelector('.btn[value = "."]');
 let operators = ['+', '-', '*', '/'];
 
@@ -40,6 +41,14 @@ for(let i=0; i<numKeys.length; i++){
         changeFontSize();
         blockDisplayLength();  
     });
+}
+
+
+/* ZDARZENIA NA PRZYCISKACH "(" I ")" */
+for(let i=0; i<bracketsKeys.length; i++){
+    bracketsKeys[i].addEventListener('click', function(){
+        unblockAllKeys();
+    })
 }
 
 
@@ -159,7 +168,7 @@ function resultLength(result){
 }
 
 
-// GDY WYNIK JEST LICZBĄ DZIESIĘTNĄ USUWA Z KOŃCA NIEPOTRZEBNE ZERA 
+/* GDY WYNIK JEST LICZBĄ DZIESIĘTNĄ USUWA Z KOŃCA NIEPOTRZEBNE ZERA */ 
 function updateResult(result) {
     if (result.indexOf('.') > -1 && result.indexOf('e') < 0) {
         result = result.replace(/0+$/, '');
@@ -171,7 +180,7 @@ function updateResult(result) {
 }
 
 
-/*POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN*/
+/* POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN*/
 function getValue(keyVal) {
     let lastChar = display.value[display.value.length-1];
     let firstChar = display.value[0];
@@ -224,17 +233,9 @@ function getValue(keyVal) {
         else if (('(0').indexOf(twoCharAfterLast) > -1){
             display.value = display.value.replace(/.$/, '');
         }        
-        //po znaku " + - * / " zamienia "0" na "0."
-        else if(operators.indexOf(lastChar) > -1){
-            display.value = display.value.replace(/.$/, '0.'); 
-        }
-        //po nawiasie ")" zamienia "0" na "*0."
+        //po nawiasie ")" zamienia "0" na "*0"
         else if((')').indexOf(lastChar) > -1){
-            display.value = display.value.replace(/.$/, '*' + keyVal + '.'); 
-        }
-        //po nawiasie "(" zamienia "0" na "0."
-        else if(('(').indexOf(lastChar) > -1){
-            display.value = display.value.replace(/.$/, keyVal + '.');
+            display.value = display.value.replace(/.$/, '*' + keyVal + ''); 
         }
     }
         
@@ -277,6 +278,10 @@ function getValue(keyVal) {
         }
         //zamienia zero stojąca za znakiem "/" na wartość klikniętego klawisza numerycznego
         else if (('/0').indexOf(twoCharAfterLast) > -1){
+            display.value = display.value.replace(/..$/, keyVal);
+        }
+        //zamienia zero stojąca za nawiasem "(" na wartość klikniętego klawisza numerycznego
+        else if (('(0').indexOf(twoCharAfterLast) > -1){
             display.value = display.value.replace(/..$/, keyVal);
         }
         //dodaje znak "*" między nawias ")" i liczbę
@@ -333,7 +338,7 @@ function checkBrackets(display) {
 }
 
 
-/*WALIDUJE WPROWADZONY CIĄG ZNAKÓW I ZWRACA WYNIK LUB ERROR */
+/* WALIDUJE WPROWADZONY CIĄG ZNAKÓW I ZWRACA WYNIK LUB ERROR */
 function result(){
     
     //sprawdza czy na końcu jest znak " + - * /" i usuwa go
