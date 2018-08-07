@@ -356,36 +356,21 @@ function result(){
     }
     
     //sprawdza poprawność wprowadzonego ciągu znaków i zwraca wynik lub "Error"
-    if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1){
+    if(display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1){
         if(checkBrackets(display.value) == true){
             let regular = /(\(+)((\-|\+)?)((\d*\.\d+)|(\d+))((\-|\+|\*|\/)((\d*\.\d+)|(\d+)))*(\)+)/;
-            let error_1 = /(\)+)(\.)/;                  // ).
-            let error_2 = /(\.)(\(+|\)+)/;              // .)|(
-            let error_3 = /((\d+\.\d+)|(\d+))(\(+)/;    // X(
-            let error_4 = /(\)+)((\d+\.\d+)|(\d+))/;    // )X
-            let error_5 = /(\(+)(\)+)/;                 // ()
+            let error_1 = /(\d+\.\d+\.)/;               // X.X.
+            let error_2 = /(\.)(\(+|\)+)/;              // .)|( 
             
-            if (regular.test(display.value) == false) {
+            if(regular.test(display.value) == false){
                     display.value = "Error";
                     blockAllKeys(display.value);
             }
-            if(error_1.test(display.value) == true){
+            else if(error_1.test(display.value) == true){
                     display.value = "Error";
                     blockAllKeys(display.value);
             }
             else if(error_2.test(display.value) == true){
-                    display.value = "Error";
-                    blockAllKeys(display.value);
-            }
-            else if(error_3.test(display.value) == true){
-                    display.value = "Error";
-                    blockAllKeys(display.value);
-            }
-            else if(error_4.test(display.value) == true){
-                    display.value = "Error";
-                    blockAllKeys(display.value);
-            }
-            else if(error_5.test(display.value) == true){
                     display.value = "Error";
                     blockAllKeys(display.value);
             }
@@ -409,20 +394,29 @@ function result(){
             display.value = "Error";
             blockAllKeys(display.value); 
         }
-    }    
+    }   
+    
     else{
-        let result = eval(display.value);
-                
-        if (result == "Infinity" || result == "-Infinity") {
-            display.value = "Error";
-            blockAllKeys(display.value);
-        }
-        else if (isNaN(result) == true) {
-            display.value = "Error";
-            blockAllKeys(display.value);
-        }
-        else {
-            display.value = resultLength(result);
+        let error =  /(\d+\.\d+\.)/;    // X.X.
+        
+        if(error.test(display.value) == true){
+           display.value = "Error";
+           blockAllKeys(display.value);
+        }        
+        else{
+            let result = eval(display.value);
+
+            if (result == "Infinity" || result == "-Infinity"){
+                display.value = "Error";
+                blockAllKeys(display.value);
+            }
+            else if (isNaN(result) == true) {
+                display.value = "Error";
+                blockAllKeys(display.value);
+            }
+            else{
+                display.value = resultLength(result);
+            }  
         }
     }
 }
