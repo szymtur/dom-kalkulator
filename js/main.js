@@ -425,69 +425,172 @@ function result(){
 /* OBSŁUGA KLAWISZY KALKULATORA ZA POMOCĄ KLAWIATURY */
 document.addEventListener("keypress", function(event) {
     if (event.keyCode === 43 ) {
-        document.querySelector(".btn[value = '+']").click();
+        let btn = document.querySelector(".btn[value = '+']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 45 ) {
-        document.querySelector(".btn[value = '-']").click();
+        let btn = document.querySelector(".btn[value = '-']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 42 ) {
-        document.querySelector(".btn[value = '*']").click();
+        let btn = document.querySelector(".btn[value = '*']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 47 ) {
-        document.querySelector(".btn[value = '/']").click();
+        let btn = document.querySelector(".btn[value = '/']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 61) {
-        document.querySelector(".btn[value = '=']").click();
+        let btn = document.querySelector(".btn[value = '=']");
+            btn.click();
+            btn.classList.add('hover');
     }
-    if (event.keyCode === 46 || 
-        event.keyCode === 44) {
-        document.querySelector(".btn[value = '.']").click();
+    if (event.keyCode === 46 || event.keyCode === 44) {
+        let btn = document.querySelector(".btn[value = '.']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 40) {
-        document.querySelector(".btn[value = '(']").click();
+        let btn = document.querySelector(".btn[value = '(']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 41) {
-        document.querySelector(".btn[value = ')']").click();
+        let btn = document.querySelector(".btn[value = ')']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 48 ) {
-        document.querySelector(".btn[value = '0']").click();
+        let btn = document.querySelector(".btn[value = '0']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 49) {
-        document.querySelector(".btn[value = '1']").click();
+        let btn = document.querySelector(".btn[value = '1']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 50) {
-        document.querySelector(".btn[value = '2']").click();
+        let btn = document.querySelector(".btn[value = '2']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 51) {
-        document.querySelector(".btn[value = '3']").click();
+        let btn = document.querySelector(".btn[value = '3']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 52) {
-        document.querySelector(".btn[value = '4']").click();
+        let btn = document.querySelector(".btn[value = '4']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 53) {
-        document.querySelector(".btn[value = '5']").click();
+        let btn = document.querySelector(".btn[value = '5']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 54) {
-        document.querySelector(".btn[value = '6']").click();
+        let btn = document.querySelector(".btn[value = '6']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 55) {
-        document.querySelector(".btn[value = '7']").click();
+        let btn = document.querySelector(".btn[value = '7']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 56) {
-        document.querySelector(".btn[value = '8']").click();
+        let btn = document.querySelector(".btn[value = '8']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 57) {
-        document.querySelector(".btn[value = '9']").click();
+        let btn = document.querySelector(".btn[value = '9']");
+            btn.click();
+            btn.classList.add('hover');
     }
 });
 
 document.addEventListener("keydown", function(event) {
     if (event.keyCode === 13 ) {
-        document.querySelector(".btn[value = '=']").click();
+        let btn = document.querySelector(".btn[value = '=']");
+            btn.click();
+            btn.classList.add('hover');
     }
     if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 27) {
-        document.querySelector(".btn[value = 'ce']").click();
+        let btn = document.querySelector(".btn[value = 'ce']");
+            btn.click();
+            btn.classList.add('hover');        
     }
 });
+
+document.addEventListener("keyup", function(event) {
+    if (event.keyCode === 187 || event.keyCode === 107 ) {
+        document.querySelector(".btn[value = '+']").classList.remove('hover');
+    }
+    if (event.keyCode === 189 || event.keyCode === 109 ) {
+        document.querySelector(".btn[value = '-']").classList.remove('hover');
+    }
+    if (event.keyCode === 56 || event.keyCode === 106 ) {
+        document.querySelector(".btn[value = '*']").classList.remove('hover');
+    }
+    if (event.keyCode === 191 || event.keyCode === 111 ) {
+        document.querySelector(".btn[value = '/']").classList.remove('hover');
+    }
+    if (event.keyCode === 187) {
+        document.querySelector(".btn[value = '=']").classList.remove('hover');
+    }
+    if (event.keyCode === 188 || event.keyCode === 190 || event.keyCode === 110) {
+        document.querySelector(".btn[value = '.']").classList.remove('hover');
+    }
+    if (event.keyCode === 57) {
+        document.querySelector(".btn[value = '(']").classList.remove('hover');
+    }
+    if (event.keyCode === 48) {
+        document.querySelector(".btn[value = ')']").classList.remove('hover');
+    }
+    if (event.keyCode === 48 || event.keyCode === 96) {
+        document.querySelector(".btn[value = '0']").classList.remove('hover');
+    }
+    if (event.keyCode === 49 || event.keyCode === 97) {
+        document.querySelector(".btn[value = '1']").classList.remove('hover');
+    }
+    if (event.keyCode === 50 || event.keyCode === 98) {
+        document.querySelector(".btn[value = '2']").classList.remove('hover');
+    }
+    if (event.keyCode === 51 || event.keyCode === 99) {
+        document.querySelector(".btn[value = '3']").classList.remove('hover');
+    }
+    if (event.keyCode === 52 || event.keyCode === 100) {
+        document.querySelector(".btn[value = '4']").classList.remove('hover');
+    }
+    if (event.keyCode === 53 || event.keyCode === 101) {
+        document.querySelector(".btn[value = '5']").classList.remove('hover');
+    }
+    if (event.keyCode === 54 || event.keyCode === 102) {
+        document.querySelector(".btn[value = '6']").classList.remove('hover');
+    }
+    if (event.keyCode === 55 || event.keyCode === 103) {
+        document.querySelector(".btn[value = '7']").classList.remove('hover');
+    }
+    if (event.keyCode === 56 || event.keyCode === 104) {
+        document.querySelector(".btn[value = '8']").classList.remove('hover');
+    }
+    if (event.keyCode === 57 || event.keyCode === 105) {
+        document.querySelector(".btn[value = '9']").classList.remove('hover');
+    }
+    if (event.keyCode === 13 ) {
+        document.querySelector(".btn[value = '=']").classList.remove('hover');
+    }
+    if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 27) {
+        document.querySelector(".btn[value = 'ce']").classList.remove('hover');
+    }    
+});    
+
 
 

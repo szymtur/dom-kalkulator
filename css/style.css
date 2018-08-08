@@ -57,10 +57,10 @@
     background-color: #765812;
 }
 
-#container #calculator .btn:hover {
+#container #calculator .btn:hover,
+#container #calculator .btn.hover {
     background-color: #4e708c;
-    color: #fff;
-    border-color: #fff;
+    border-color: #aaaaaa;
     border-width: 1px;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
