@@ -13,6 +13,7 @@ let operators = ['+', '-', '*', '/'];
 resultKey.addEventListener('click', function(){
     result();
     blockNumKeys();
+    unblockOperKeys();
     changeToAC();
     changeFontSize();
 });
@@ -30,7 +31,6 @@ for(let i=0; i<operKeys.length; i++){
         unblockAllKeys();
         changeFontSize();
         changeToCE();
-        blockDisplayLength();    
     });
 }
 
@@ -44,21 +44,13 @@ for(let i=0; i<numKeys.length; i++){
 }
 
 
-/* ZDARZENIA NA PRZYCISKACH "(" I ")" */
-for(let i=0; i<bracketsKeys.length; i++){
-    bracketsKeys[i].addEventListener('click', function(){
-        unblockAllKeys();
-    })
-}
-
-
 /* ZDARZENIA NA PRZYCISKU "CE" */
 clearKey.addEventListener('click', function(){
      if(clearKey.className.indexOf('ac') > -1){
-         unblockAllKeys();
-         allClear();
-         changeToCE();
-         changeFontSize();
+        unblockAllKeys();
+        allClear();
+        changeToCE();
+        changeFontSize();
     }
     else if(clearKey.className.indexOf('ce') > -1 ){
         unblockAllKeys();
@@ -81,8 +73,11 @@ function blockAllKeys(display){
 /* BLOKUJE WSZYSTKIE KLAWISZE (OPRÓCZ "CE" I "=") PO WYPISANIU WIĘCEJ NIŻ 20 ZNAKÓW */
 function blockDisplayLength(){
     if(display.value.length >= 20){
-        for (let i=1; i<numKeys.length-1; i++){
+        for (let i=0; i<numKeys.length; i++){
             numKeys[i].disabled = true;
+        }
+        for(let i=0; i<operKeys.length; i++){
+            operKeys[i].disabled = true;
         }
     }
 }
@@ -108,6 +103,14 @@ function blockDecimal() {
 function unblockAllKeys(){
     for (let i=1; i<allKeys.length; i++){
         allKeys[i].disabled = false;
+    }
+}
+
+
+/* ODBLOKOWUJE KLAWISZE FUNKCYJNE */
+function unblockOperKeys(){
+    for (let i=0; i<operKeys.length; i++){
+        operKeys[i].disabled = false;
     }
 }
 
@@ -162,7 +165,7 @@ function resultLength(result){
         result = result.toPrecision(10);
     }
     else{
-         result = result.toString();
+        result = result.toString();
     }
     return updateResult(result);
 }
@@ -171,7 +174,7 @@ function resultLength(result){
 /* GDY WYNIK JEST LICZBĄ DZIESIĘTNĄ USUWA Z KOŃCA NIEPOTRZEBNE ZERA */ 
 function updateResult(result) {
     if (result.indexOf('.') > -1 && result.indexOf('e') < 0) {
-        result = result.replace(/0+$/, '');
+        result = result.replace(/.0+$/, '');
     }
     else{
         result;
@@ -183,7 +186,6 @@ function updateResult(result) {
 /* POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN*/
 function getValue(keyVal) {
     let lastChar = display.value[display.value.length-1];
-    let firstChar = display.value[0];
 
     //blokuje możliwość wpisania kilkukrotnie znaku " + - * / "
     if (keyVal == '-' || keyVal == '+' || keyVal == '*' || keyVal == '/' ){
@@ -240,7 +242,7 @@ function getValue(keyVal) {
     }
         
     if (keyVal == "."){
-        //jeżeli na końcu jest "." - blokuje dodanie kolejnych
+        //jeżeli na końcu jest "." - blokuje dodanie kolejnych "."
         if (('.').indexOf(lastChar) > -1){
             display.value = display.value.replace(/.$/, '');
         }
@@ -309,10 +311,13 @@ function getValue(keyVal) {
         }
     }
     
-    if (keyVal == '/' || keyVal == '*'){
-        //blokuje użycie operatorów "*" i "/" po nawiasie "("
+    if (keyVal == '+' || keyVal == '*' || keyVal == '/'){
+        //blokuje użycie operatorów "+", "*", "/" po nawiasie "("
         if(('(').indexOf(lastChar) > -1){
             display.value = display.value.replace(/.$/, ''); 
+        }
+        else if(('(-').indexOf(lastChar) > -1){
+            display.value = display.value.replace(/.$/, '-'); 
         }
     }
 }
@@ -324,9 +329,9 @@ function checkBrackets(display) {
     counter_2 = 0;
 
     for (let i = 0; i < display.length; i++) {
-        if (display[i] == '(') {
+        if (display[i] == '(' ) {
             counter_1++
-        } else if (display[i] == ')') {
+        } else if (display[i] == ')' ) {
             counter_2++
         }
     }
