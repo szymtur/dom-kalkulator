@@ -52,7 +52,7 @@ body {
     background-color: #4e708c;
 }
 
-#container #calculator .btn{
+#container #calculator .btn {
     width: 90px;
     height: 50px;
     margin-right: 10px;
@@ -101,15 +101,27 @@ body {
     }
 }
 
-@media (max-width: 812px) and (orientation: landscape) {
+@media (max-width: 824px) and (orientation: landscape) {
     #wrapper{
         width: 286px;
         height: 286px;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -40%);
     }
 
     #container {
         transform: scale(0.55);
         margin: -117px -117px -117px -117px;
+    }
+
+    #container #calculator {
+        height: 430px;
+    }
+
+    #container #calculator #display {
+        margin-bottom: 25px;
+    }
+
+    #container #calculator .btn {
+        height: 40px;
     }
 }
