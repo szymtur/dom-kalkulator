@@ -90,7 +90,7 @@ function blockNumKeys(){
     }
 }
 
-///////////////////////////////////////////////////
+
 /* BLOKUJE KLAWISZ "." PO PIERWSZYM NACIŚNIĘCIU */
 function blockDecimal() {
     if (display.value.indexOf('.') > -1) {
@@ -171,10 +171,13 @@ function resultLength(result){
 }
 
 
-/* GDY WYNIK JEST LICZBĄ DZIESIĘTNĄ USUWA Z KOŃCA NIEPOTRZEBNE ZERA */ 
+/* GDY WYNIK JEST LICZBĄ DZIESIĘTNĄ USUWA Z KOŃCA NIEPOTRZEBNE ZERA ORAZ "."*/ 
 function updateResult(result) {
-    if (result.indexOf('.') > -1 && result.indexOf('e') < 0) {
-        result = result.replace(/.0+$/, '');
+    if (result.indexOf('.') > -1 && result.indexOf('e') == -1) {
+        result = result.replace(/0+$/, '');
+        if(result.length-1 == result.lastIndexOf('.')){
+            result = result.replace(/\.$/, '');
+        }
     }
     else{
         result;
@@ -260,6 +263,8 @@ function getValue(keyVal) {
     if (keyVal == "1" || keyVal == "2" || keyVal == "3" ||
         keyVal == "4" || keyVal == "5" || keyVal == "6" ||
         keyVal == "7" || keyVal == "8" || keyVal == "9"  ) {
+                
+        let twoCharsAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
 
         //zamienia zero stojąca za znakiem "-" na wartość klikniętego klawisza numerycznego
         if (('-0').indexOf(twoCharsAfterLast) > -1){
@@ -599,4 +604,3 @@ document.addEventListener("keyup", function(event) {
         document.querySelector(".btn[value = 'ce']").classList.remove('hover');
     }    
 });    
-

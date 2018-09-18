@@ -1,18 +1,41 @@
-#container{
-    margin: 30px auto;
-    width: 455px;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    touch-action: manipulation;
+}
+
+body {
+    background: lightgray;
+}
+
+#wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 416px;
+    height: 416px;
+}
+
+#container {
+    width: 520px;
+    height: 520px;
+    transform: scale(0.8);
+    margin: -52px -52px -52px -52px;
 }
 
 #container #calculator {
     width: 100%;   
     border-radius: 10px;
-    border-style: solid;  
-    border-color: #000;
-    border-width: 2px;
+    border: 2px solid #000;  
     background-color: #213b50;
     padding: 30px;
     box-shadow: 5px 5px 5px #000;
-  }
+}
 
 #container #calculator #display {
     width: 430px;
@@ -27,7 +50,7 @@
     font-size: 40px;
     font-family: 'Nova Square';
     background-color: #4e708c;
-  }
+}
 
 #container #calculator .btn{
     width: 90px;
@@ -46,7 +69,7 @@
     outline: none;
     box-shadow: 5px 5px 5px #000000;
     transition: background-color 200ms;
-  }
+}
   
 #container #calculator .btn:last-child {
     width: 205px;
@@ -63,4 +86,30 @@
     border-color: #aaaaaa;
     border-width: 1px;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 420px) and (orientation: portrait) {
+    #wrapper{
+        width: 286px;
+        height: 286px;
+        transform: translate(-50%, -70%);
+    }
+
+    #container {
+        transform: scale(0.55);
+        margin: -117px -117px -117px -117px;
+    }
+}
+
+@media (max-width: 812px) and (orientation: landscape) {
+    #wrapper{
+        width: 286px;
+        height: 286px;
+        transform: translate(-50%, -50%);
+    }
+
+    #container {
+        transform: scale(0.55);
+        margin: -117px -117px -117px -117px;
+    }
 }
