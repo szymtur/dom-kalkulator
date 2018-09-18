@@ -90,7 +90,7 @@ function blockNumKeys(){
     }
 }
 
-
+///////////////////////////////////////////////////
 /* BLOKUJE KLAWISZ "." PO PIERWSZYM NACIŚNIĘCIU */
 function blockDecimal() {
     if (display.value.indexOf('.') > -1) {
@@ -190,8 +190,9 @@ function getValue(keyVal) {
     //blokuje możliwość wpisania kilkukrotnie znaku " + - * / "
     if (keyVal == '-' || keyVal == '+' || keyVal == '*' || keyVal == '/' ){
         
-        if(operators.indexOf(lastChar) > -1)
+        if(operators.indexOf(lastChar) > -1){
             display.value = display.value.replace(/.$/, '');
+        }    
     }    
     
     //zamienia defaultowe "0" z ekranu na cyfrę lub dodaje do "0" znaki " + - * / . "
@@ -208,31 +209,27 @@ function getValue(keyVal) {
         display.value += keyVal;
     }
     
-    
     if (keyVal == '0'){
-        let twoCharAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
+        let twoCharsAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
+        
         //blokuje zero po znaku "-"
-        if (('-0').indexOf(twoCharAfterLast) > -1){
+        if (('-0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/.$/, '');
         }
         //blokuje zero po znaku "+"
-        else if (('+0').indexOf(twoCharAfterLast) > -1){
+        else if (('+0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/.$/, '');
         }
         //blokuje zero po znaku "*"
-        else if (('*0').indexOf(twoCharAfterLast) > -1){
+        else if (('*0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/.$/, '');
         }
         //blokuje zero po znaku "/"
-        else if (('/0').indexOf(twoCharAfterLast) > -1){
-            display.value = display.value.replace(/.$/, '');
-        }
-        //blokuje zero po nawiasie ")"
-        else if ((')0').indexOf(twoCharAfterLast) > -1){
+        else if (('/0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/.$/, '');
         }
         //blokuje zero po nawiasie "("
-        else if (('(0').indexOf(twoCharAfterLast) > -1){
+        else if (('(0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/.$/, '');
         }        
         //po nawiasie ")" zamienia "0" na "*0"
@@ -240,7 +237,7 @@ function getValue(keyVal) {
             display.value = display.value.replace(/.$/, '*' + keyVal + ''); 
         }
     }
-        
+
     if (keyVal == "."){
         //jeżeli na końcu jest "." - blokuje dodanie kolejnych "."
         if (('.').indexOf(lastChar) > -1){
@@ -262,28 +259,26 @@ function getValue(keyVal) {
         
     if (keyVal == "1" || keyVal == "2" || keyVal == "3" ||
         keyVal == "4" || keyVal == "5" || keyVal == "6" ||
-        keyVal == "7" || keyVal == "8" || keyVal == "9" ){
-                
-        let twoCharAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
-        
+        keyVal == "7" || keyVal == "8" || keyVal == "9"  ) {
+
         //zamienia zero stojąca za znakiem "-" na wartość klikniętego klawisza numerycznego
-        if (('-0').indexOf(twoCharAfterLast) > -1){
+        if (('-0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/..$/, keyVal);
         }
         //zamienia zero stojąca za znakiem "+" na wartość klikniętego klawisza numerycznego
-        else if (('+0').indexOf(twoCharAfterLast) > -1){
+        else if (('+0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/..$/, keyVal);
         }
         //zamienia zero stojąca za znakiem "*" na wartość klikniętego klawisza numerycznego
-        else if (('*0').indexOf(twoCharAfterLast) > -1){
+        else if (('*0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/..$/, keyVal);
         }
         //zamienia zero stojąca za znakiem "/" na wartość klikniętego klawisza numerycznego
-        else if (('/0').indexOf(twoCharAfterLast) > -1){
+        else if (('/0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/..$/, keyVal);
         }
         //zamienia zero stojąca za nawiasem "(" na wartość klikniętego klawisza numerycznego
-        else if (('(0').indexOf(twoCharAfterLast) > -1){
+        else if (('(0').indexOf(twoCharsAfterLast) > -1){
             display.value = display.value.replace(/..$/, keyVal);
         }
         //dodaje znak "*" między nawias ")" i liczbę
@@ -310,14 +305,22 @@ function getValue(keyVal) {
             display.value = display.value.replace(/.$/, '*' + keyVal); 
         }
     }
-    
-    if (keyVal == '+' || keyVal == '*' || keyVal == '/'){
+
+    if (keyVal == '/' || keyVal == '*' || keyVal == '+' ){
+        let lastTwoChars = (display.value[display.value.length-2] + display.value[display.value.length-1]);
+        
         //blokuje użycie operatorów "+", "*", "/" po nawiasie "("
         if(('(').indexOf(lastChar) > -1){
             display.value = display.value.replace(/.$/, ''); 
         }
-        else if(('(-').indexOf(lastChar) > -1){
-            display.value = display.value.replace(/.$/, '-'); 
+        else if(('(+').indexOf(lastTwoChars) > -1){
+            display.value = display.value.replace(/..$/, '(-'); 
+        }
+        else if(('(/').indexOf(lastTwoChars) > -1){
+            display.value = display.value.replace(/..$/, '(-');
+        }
+        else if(('(*').indexOf(lastTwoChars) > -1){
+            display.value = display.value.replace(/..$/, '(-');
         }
     }
 }
@@ -596,6 +599,4 @@ document.addEventListener("keyup", function(event) {
         document.querySelector(".btn[value = 'ce']").classList.remove('hover');
     }    
 });    
-
-
 
