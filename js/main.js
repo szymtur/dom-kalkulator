@@ -29,6 +29,7 @@ decimalKey.addEventListener('click', function(){
 for(let i=0; i<operKeys.length; i++){
     operKeys[i].addEventListener('click', function(){
         unblockAllKeys();
+        blockDisplayLength();
         changeFontSize();
         changeToCE();
     });
@@ -57,7 +58,7 @@ clearKey.addEventListener('click', function(){
         clearEnter();
         changeFontSize();
     }
-})
+});
 
 
 /* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM "AC"), GDY NA EKRANIE POJAWI SIĘ ERROR */
@@ -109,8 +110,15 @@ function unblockAllKeys(){
 
 /* ODBLOKOWUJE KLAWISZE FUNKCYJNE */
 function unblockOperKeys(){
-    for (let i=0; i<operKeys.length; i++){
-        operKeys[i].disabled = false;
+    if(display.value == 'Error'){
+        for (let i=0; i<operKeys.length; i++){
+            operKeys[i].disabled = true;
+        }
+    }
+    else{
+        for (let i=0; i<operKeys.length; i++){
+            operKeys[i].disabled = false;
+        }
     }
 }
 
@@ -161,8 +169,8 @@ function changeFontSize(){
 
 /* FORMATUJE WYNIK, ŻEBY ZMIEŚCIŁ SIĘ NA EKRANIE */
 function resultLength(result){
-    if(result.toString().length > 12){
-        result = result.toPrecision(10);
+    if(result.toString().length > 15){
+        result = result.toPrecision(8);
     }
     else{
         result = result.toString();
