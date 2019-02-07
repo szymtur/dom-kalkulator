@@ -2,10 +2,10 @@
 
 ![](image/layout.png)
 
-###Link:
+### Link:
 [https://szymtur.github.io/kalkulator](https://szymtur.github.io/kalkulator)
 
-###Description:
+### Description:
 Calculator with keyboard support.
 
 ### Technologies used:
