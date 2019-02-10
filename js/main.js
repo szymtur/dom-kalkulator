@@ -21,8 +21,16 @@ resultKey.addEventListener('click', function() {
 
 /* ZDARZENIA NA PRZYCISKU "." */
 decimalKey.addEventListener('click', function() {
-    blockDecimal();
+    checkDecimal();
 });
+
+
+/* ZDARZENIA NA PRZYCISKACH "( )" */
+for (let i=0; i<bracketsKeys.length; i++) {
+    bracketsKeys[i].addEventListener('click', function() {
+        checkDecimal();
+    });
+}
 
 
 /* ZDARZENIA NA PRZYCISKACH FUNKCYJNYCH */
@@ -47,7 +55,7 @@ for (let i=0; i<numKeys.length; i++) {
 
 /* ZDARZENIA NA PRZYCISKU "CE" */
 clearKey.addEventListener('click', function() {
-     if (clearKey.className.indexOf('ac') > -1) {
+    if (clearKey.className.indexOf('ac') > -1) {
         unblockAllKeys();
         allClear();
         changeToCE();
@@ -57,6 +65,7 @@ clearKey.addEventListener('click', function() {
         unblockAllKeys();
         clearEnter();
         changeFontSize();
+        checkDecimal();
     }
 });
 
@@ -92,11 +101,17 @@ function blockNumKeys() {
 }
 
 
-/* BLOKUJE KLAWISZ "." PO PIERWSZYM NACIŚNIĘCIU */
-function blockDecimal() {
-    if (display.value.indexOf('.') > -1) {
-        decimalKey.disabled = true;
-    }
+/* SPRAWDZA POZYCJĘ "." I BLOKUJE/ODBLOKOWUJE KLAWISZ "." */
+function checkDecimal() {
+    let plusSign =  display.value.lastIndexOf('+');
+    let minusSign =  display.value.lastIndexOf('-');
+    let timesSign =  display.value.lastIndexOf('*');
+    let divisionSign =  display.value.lastIndexOf('/');
+    
+    let decimalSignPosition = display.value.lastIndexOf('.');
+    let signPosition = Math.max(plusSign, minusSign, timesSign, divisionSign);
+
+    decimalSignPosition > signPosition ? decimalKey.disabled = true : decimalKey.disabled = false;
 }
 
 
@@ -209,7 +224,7 @@ function getValue(keyVal) {
             display.value = keyVal;
             }
         }
-    //dodaje kolejne cyfry lub znaki na ekranie
+    //dodaje kolejne cyfry i znaki na ekranie
     else {
         display.value += keyVal;
     }
@@ -273,12 +288,8 @@ function getValue(keyVal) {
     }
 
     if (keyVal == ".") {
-        //jeżeli na końcu jest "." - blokuje dodanie kolejnych "."
-        if (('.').indexOf(lastChar) > -1) {
-            display.value = display.value.replace(/..$/, keyVal);
-        }
-        //po znaku " + - * / " zamienia "." na "0."
-        else if ((operators).indexOf(lastChar) > -1) {
+        //po operatorach " + - * / " zamienia "." na "0."
+        if ((operators).indexOf(lastChar) > -1) {
             display.value = display.value.replace(/.$/, '0' + keyVal); 
         }
         //po nawiasie "(" zamienia "." na "0."
@@ -290,26 +301,26 @@ function getValue(keyVal) {
             display.value = display.value.replace(/.$/, '*0' + keyVal);
         }
     }
-        
+
     if (keyVal == "1" || keyVal == "2" || keyVal == "3" ||
         keyVal == "4" || keyVal == "5" || keyVal == "6" ||
         keyVal == "7" || keyVal == "8" || keyVal == "9"  ) {
                 
         let twoCharsAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
 
-        //zamienia zero stojąca za znakiem "-" na wartość klikniętego klawisza numerycznego
+        //zamienia zero stojąca za operatorem "-" na wartość klikniętego klawisza numerycznego
         if (('-0').indexOf(twoCharsAfterLast) > -1) {
             display.value = display.value.replace(/..$/, keyVal);
         }
-        //zamienia zero stojąca za znakiem "+" na wartość klikniętego klawisza numerycznego
+        //zamienia zero stojąca za operatorem "+" na wartość klikniętego klawisza numerycznego
         else if (('+0').indexOf(twoCharsAfterLast) > -1) {
             display.value = display.value.replace(/..$/, keyVal);
         }
-        //zamienia zero stojąca za znakiem "*" na wartość klikniętego klawisza numerycznego
+        //zamienia zero stojąca za operatorem "*" na wartość klikniętego klawisza numerycznego
         else if (('*0').indexOf(twoCharsAfterLast) > -1) {
             display.value = display.value.replace(/..$/, keyVal);
         }
-        //zamienia zero stojąca za znakiem "/" na wartość klikniętego klawisza numerycznego
+        //zamienia zero stojąca za operatorem "/" na wartość klikniętego klawisza numerycznego
         else if (('/0').indexOf(twoCharsAfterLast) > -1) {
             display.value = display.value.replace(/..$/, keyVal);
         }
@@ -361,17 +372,18 @@ function getValue(keyVal) {
 
 /* SPRAWDZA CZY ILOŚĆ NAWIASÓW OTWIERAJĄCYCH I ZAMYKAJĄCYCH JEST TAKA SAMA */
 function checkBrackets(display) {
-    counter_1 = 0;
-    counter_2 = 0;
+    let counterLeft = 0;
+    let counterRight = 0;
 
     for (let i = 0; i < display.length; i++) {
         if (display[i] == '(' ) {
-            counter_1++
+            counterLeft++
         } else if (display[i] == ')' ) {
-            counter_2++
+            counterRight++
         }
     }
-    if (counter_1 == counter_2) {
+
+    if (counterLeft == counterRight) {
         return true;
     } else {
         return false;
@@ -381,39 +393,30 @@ function checkBrackets(display) {
 
 /* WALIDUJE WPROWADZONY CIĄG ZNAKÓW I ZWRACA WYNIK LUB ERROR */
 function result() {
-    
-    //sprawdza czy na końcu jest znak " + - * /" i usuwa go
+    //sprawdza czy na końcu jest operator " + - * / " i usuwa go
     let lastChar = display.value[display.value.length-1];
     if (operators.indexOf(lastChar) > -1) {
         display.value = display.value.replace(/.$/, '');
-    }
-    
-    //zamienia ")(" na ")*("
-    let reg = /\)\(/;
-    for (let i=0; i<display.value.length; i++) {
-        if (reg.test(display.value) == true) {
-            display.value = display.value.replace(/\)\(/g, ')*(');
-        }    
     }
     
     //sprawdza poprawność wprowadzonego ciągu znaków i zwraca wynik lub "Error"
     if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1) {
         if (checkBrackets(display.value) == true) {
             let regular = /(\(+)((\-|\+)?)((\d*\.\d+)|(\d+))((\-|\+|\*|\/)((\d*\.\d+)|(\d+)))*(\)+)/;
-            let error_1 = /(\d+\.\d+\.)/;               // X.X.
-            let error_2 = /(\.)(\(+|\)+)/;              // .)|( 
+            let error_1 = /(\)+)(\+|\-|\*|\/)*(\(+\)+)/;            // )*()
+            let error_2 = /(\(+\)+)(\+|\-|\*|\/)*(\(+)/;            // ()*( 
             
             if (regular.test(display.value) == false) {
-                    display.value = "Error";
-                    blockAllKeys(display.value);
+                display.value = "Error";
+                blockAllKeys(display.value);
             }
             else if (error_1.test(display.value) == true) {
-                    display.value = "Error";
-                    blockAllKeys(display.value);
+                display.value = "Error";
+                blockAllKeys(display.value);
             }
             else if (error_2.test(display.value) == true) {
-                    display.value = "Error";
-                    blockAllKeys(display.value);
+                display.value = "Error";
+                blockAllKeys(display.value);
             }
             else {
                 let result = eval(display.value);
@@ -436,29 +439,20 @@ function result() {
             blockAllKeys(display.value); 
         }
     }   
-    
     else {
-        let error =  /(\d+\.\d+\.)/;    // X.X.
-        
-        if (error.test(display.value) == true) {
-           display.value = "Error";
-           blockAllKeys(display.value);
-        }        
-        else {
-            let result = eval(display.value);
+        let result = eval(display.value);
 
-            if (result == "Infinity" || result == "-Infinity") {
-                display.value = "Error";
-                blockAllKeys(display.value);
-            }
-            else if (isNaN(result) == true) {
-                display.value = "Error";
-                blockAllKeys(display.value);
-            }
-            else {
-                display.value = resultLength(result);
-            }  
+        if (result == "Infinity" || result == "-Infinity") {
+            display.value = "Error";
+            blockAllKeys(display.value);
         }
+        else if (isNaN(result) == true) {
+            display.value = "Error";
+            blockAllKeys(display.value);
+        }
+        else {
+            display.value = resultLength(result);
+        }  
     }
 }
 
