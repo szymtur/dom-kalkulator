@@ -29,6 +29,7 @@ decimalKey.addEventListener('click', function() {
 for (let i=0; i<bracketsKeys.length; i++) {
     bracketsKeys[i].addEventListener('click', function() {
         checkDecimal();
+        checkBrackets();
     });
 }
 
@@ -37,6 +38,7 @@ for (let i=0; i<bracketsKeys.length; i++) {
 for (let i=0; i<operKeys.length; i++) {
     operKeys[i].addEventListener('click', function() {
         unblockAllKeys();
+        checkBrackets();
         blockDisplayLength();
         changeFontSize();
         changeToCE();
@@ -47,8 +49,9 @@ for (let i=0; i<operKeys.length; i++) {
 /* ZDARZENIA NA PRZYCISKACH NUMERYCZNYCH */
 for (let i=0; i<numKeys.length; i++) {
     numKeys[i].addEventListener('click', function() {
+        checkBrackets();
         changeFontSize();
-        blockDisplayLength();  
+        blockDisplayLength();
     });
 }
 
@@ -64,8 +67,9 @@ clearKey.addEventListener('click', function() {
     else if (clearKey.className.indexOf('ce') > -1 ) {
         unblockAllKeys();
         clearEnter();
-        changeFontSize();
         checkDecimal();
+        checkBrackets();
+        changeFontSize();
     }
 });
 
@@ -215,9 +219,12 @@ function getValue(keyVal) {
 
     if (display.value == "0") {
         //dodaje do defaultowego "0" na ekranie operator " + - * / . "
-        if (keyVal == '+' || keyVal == '*' || keyVal =='-' ||
-            keyVal == '/' || keyVal == '.' ) {
+        if (keyVal == '+' || keyVal == '*' || keyVal =='-' || keyVal == '/' || keyVal == '.' ) {
             display.value += keyVal;
+        }
+        //uniemożliwia rozpoczęcie wprowadzania działania matematycznego od " ) "
+        else if(keyVal == ")") {
+            display.value = 0;
         }
         //zamienia defaultowe "0" z ekranu na cyfrę
         else {
@@ -347,7 +354,7 @@ function getValue(keyVal) {
         else if ((')').indexOf(lastChar) > -1) {
             display.value = display.value.replace(/.$/, '*' + keyVal);
         }
-        //dodaje znak mnożenia "*" między liczbę i nawias "("
+        //dodaje operator "*" między liczbę i nawias "("
         else if (numbers.indexOf(lastChar) > -1) {
             display.value = display.value.replace(/.$/, '*' + keyVal); 
         }
@@ -370,22 +377,25 @@ function getValue(keyVal) {
 }
 
 
-/* SPRAWDZA CZY ILOŚĆ NAWIASÓW OTWIERAJĄCYCH I ZAMYKAJĄCYCH JEST TAKA SAMA */
-function checkBrackets(display) {
-    let counterLeft = 0;
-    let counterRight = 0;
+/* WALIDUJE ILOŚĆ NAWIASÓW OTWIERAJĄCYCH I ZAMYKAJĄCYCH */
+function checkBrackets() {
+    let leftBracketsCounter = 0;
+    let rightBracketsCounter = 0;
 
-    for (let i = 0; i < display.length; i++) {
-        if (display[i] == '(' ) {
-            counterLeft++
-        } else if (display[i] == ')' ) {
-            counterRight++
+    for (let i = 0; i < display.value.length; i++) {
+        if (display.value[i] == '(' ) {
+            leftBracketsCounter++;
+        } else if (display.value[i] == ')' ) {
+            rightBracketsCounter++;
         }
     }
 
-    if (counterLeft == counterRight) {
+    if (leftBracketsCounter == rightBracketsCounter) {
+        bracketsKeys[1].disabled = true;
         return true;
-    } else {
+    }
+    else  {
+        bracketsKeys[1].disabled = false
         return false;
     }
 }
@@ -403,18 +413,13 @@ function result() {
     if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1) {
         if (checkBrackets(display.value) == true) {
             let regular = /(\(+)((\-|\+)?)((\d*\.\d+)|(\d+))((\-|\+|\*|\/)((\d*\.\d+)|(\d+)))*(\)+)/;
-            let error_1 = /(\)+)(\+|\-|\*|\/)*(\(+\)+)/;            // )*()
-            let error_2 = /(\(+\)+)(\+|\-|\*|\/)*(\(+)/;            // ()*( 
-            
+            let error = /(\+|\-|\*|\/)*(\(+\)+)/g;
+
             if (regular.test(display.value) == false) {
                 display.value = "Error";
                 blockAllKeys(display.value);
             }
-            else if (error_1.test(display.value) == true) {
-                display.value = "Error";
-                blockAllKeys(display.value);
-            }
-            else if (error_2.test(display.value) == true) {
+            else if (error.test(display.value) == true) {
                 display.value = "Error";
                 blockAllKeys(display.value);
             }
