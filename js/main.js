@@ -2,7 +2,7 @@ let display = document.querySelector('#display');
 let allKeys = document.querySelectorAll('.btn');
 let numKeys = document.querySelectorAll('.number');
 let operKeys = document.querySelectorAll('.operator');
-let bracketsKeys = document.querySelectorAll('.bracket');
+let bracketKeys = document.querySelectorAll('.bracket');
 let clearKey = document.querySelector('.clear');
 let resultKey = document.querySelector('.result');
 let decimalKey = document.querySelector('.btn[value = "."]');
@@ -25,11 +25,13 @@ decimalKey.addEventListener('click', function() {
 });
 
 
-/* ZDARZENIA NA PRZYCISKACH "( )" */
-for (let i=0; i<bracketsKeys.length; i++) {
-    bracketsKeys[i].addEventListener('click', function() {
+/* ZDARZENIA NA PRZYCISKACH "(" ORAZ ")" */
+for (let i=0; i<bracketKeys.length; i++) {
+    bracketKeys[i].addEventListener('click', function() {
         checkDecimal();
-        checkBrackets();
+		checkBrackets();
+		changeFontSize();
+        blockDisplayLength();
     });
 }
 
@@ -39,8 +41,8 @@ for (let i=0; i<operKeys.length; i++) {
     operKeys[i].addEventListener('click', function() {
         unblockAllKeys();
         checkBrackets();
-        blockDisplayLength();
         changeFontSize();
+		blockDisplayLength();
         changeToCE();
     });
 }
@@ -58,23 +60,24 @@ for (let i=0; i<numKeys.length; i++) {
 
 /* ZDARZENIA NA PRZYCISKU "CE" */
 clearKey.addEventListener('click', function() {
-    if (clearKey.className.indexOf('ac') > -1) {
-        unblockAllKeys();
+	if (clearKey.value == 'ac') {
+		unblockAllKeys();
         allClear();
         changeToCE();
-        changeFontSize();
+		changeFontSize();
     }
-    else if (clearKey.className.indexOf('ce') > -1 ) {
+	else if (clearKey.value == 'ce') {
         unblockAllKeys();
         clearEnter();
         checkDecimal();
         checkBrackets();
-        changeFontSize();
+		changeFontSize();
+		blockDisplayLength();
     }
 });
 
 
-/* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM "AC"), GDY NA EKRANIE POJAWI SIĘ ERROR */
+/* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM "AC"), GDY NA EKRANIE KALKULATORA POJAWI SIĘ ERROR */
 function blockAllKeys(display) {
     if (display == 'Error') {
         for (let i=1; i<allKeys.length; i++) {
@@ -84,24 +87,37 @@ function blockAllKeys(display) {
 }
 
 
-/* BLOKUJE WSZYSTKIE KLAWISZE (OPRÓCZ "CE" I "=") PO WYPISANIU WIĘCEJ NIŻ 20 ZNAKÓW */
+/* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM "=", ")", "CE") PO WYPISANIU WIĘCEJ NIŻ 20 ZNAKÓW */
 function blockDisplayLength() {
-    if (display.value.length >= 20) {
-        for (let i=0; i<numKeys.length; i++) {
-            numKeys[i].disabled = true;
-        }
-        for (let i=0; i<operKeys.length; i++) {
-            operKeys[i].disabled = true;
-        }
-    }
+	let lastChar = display.value[display.value.length-1];
+
+	if (display.value.length >= 20) {
+		for (let i=0; i<numKeys.length; i++) {
+			numKeys[i].disabled = true;
+		}
+		for (let i=0; i<operKeys.length; i++) {
+			operKeys[i].disabled = true;
+		}
+		if (operators.indexOf(lastChar) == -1) {
+			for (let i=0; i<bracketKeys.length; i++) {
+				bracketKeys[i].disabled = true;
+			}	
+		}
+		else {
+			bracketKeys[0].disabled = true;
+		}
+	}
 }
 
 
-/* BLOKUJE KLAWISZE NUMERYCZNYE PO NACIŚNIĘCIU "=" */
+/* BLOKUJE KLAWISZE NUMERYCZNYE ORAZ KLAWISZE NAWIASÓW PO NACIŚNIĘCIU "=" */
 function blockNumKeys() {
     for (let i=0; i<numKeys.length; i++) {
         numKeys[i].disabled = true;
-    }
+	}
+	for (let i=0; i<bracketKeys.length; i++) {
+		bracketKeys[i].disabled = true;
+	}
 }
 
 
@@ -142,7 +158,7 @@ function unblockOperKeys() {
 }
 
 
-/* "CE" - USUWA PO JEDNYM ZNAKU Z EKRANU */
+/* "CE" - USUWA PO JEDNYM ZNAKU Z EKRANU KALKULATORA */
 function clearEnter() {
     if (display.value.length > 1) {
         display.value = display.value.replace(/.$/, '');
@@ -153,7 +169,7 @@ function clearEnter() {
 }
 
 
-/* "AC" - CZYŚCI CAŁY EKRAN */
+/* "AC" - CZYŚCI CAŁY EKRAN KALKULATORA */
 function allClear() {
     display.value = '0';
 }
@@ -162,20 +178,18 @@ function allClear() {
 /* ZMIENIA PRZYCISK "CE" NA "AC" */
 function changeToAC() {
     clearKey.innerText = 'AC';
-    clearKey.classList.remove('ce');
-    clearKey.classList.add('ac');
+	clearKey.value = 'ac';
 }
 
 
 /* ZMIENIA PRZYCISK "AC" NA "CE" */
 function changeToCE() {
     clearKey.innerText = 'CE';
-    clearKey.classList.remove('ac') ;
-    clearKey.classList.add('ce');    
+	clearKey.value = 'ce';
 }
 
 
-/* ZMIENIA WIELKOŚĆ CZCIONKI EKRANU PO WPISANIU 15 ZNAKÓW */
+/* ZMIENIA WIELKOŚĆ CZCIONKI NA EKRANIE KALKULATORA PO WPISANIU 15 ZNAKÓW */
 function changeFontSize() {
     if (display.value.length > 15) {
         display.style.fontSize = '30px';
@@ -186,7 +200,7 @@ function changeFontSize() {
 }
  
 
-/* FORMATUJE WYNIK, ŻEBY ZMIEŚCIŁ SIĘ NA EKRANIE */
+/* FORMATUJE WYNIK, TAK ŻEBY ZMIEŚCIŁ SIĘ NA EKRANIE KALKULATORA */
 function resultLength(result) {
     if (result.toString().length > 15) {
         result = result.toPrecision(8);
@@ -203,7 +217,7 @@ function updateResult(result) {
     if (result.indexOf('.') > -1 && result.indexOf('e') == -1) {
         result = result.replace(/0+$/, '');
         if (result.length-1 == result.lastIndexOf('.')) {
-            result = result.replace(/\.$/, '');
+            result = result.replace(/\.+$/, '');
         }
     }
     else {
@@ -213,7 +227,7 @@ function updateResult(result) {
 }
 
 
-/* POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN */
+/* POBIERA ZNAKI Z KLAWISZY I WYPISUJE JE NA EKRAN KALKULATORA*/
 function getValue(keyVal) {
     let lastChar = display.value[display.value.length-1];
 
@@ -391,11 +405,11 @@ function checkBrackets() {
     }
 
     if (leftBracketsCounter == rightBracketsCounter) {
-        bracketsKeys[1].disabled = true;
+        bracketKeys[1].disabled = true;
         return true;
     }
     else  {
-        bracketsKeys[1].disabled = false
+        bracketKeys[1].disabled = false
         return false;
     }
 }
@@ -563,7 +577,7 @@ document.addEventListener("keydown", function(event) {
             btn.classList.add('hover');
     }
     if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 27) {
-        let btn = document.querySelector(".btn[value = 'ce']");
+        let btn = document.querySelector('.clear');
             btn.click();
             btn.classList.add('hover');        
     }
