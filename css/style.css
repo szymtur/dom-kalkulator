@@ -1,11 +1,13 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 html {
-    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
 }
 
 body {
@@ -16,7 +18,9 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
     width: 416px;
     height: 416px;
 }
@@ -24,7 +28,9 @@ body {
 #container {
     width: 520px;
     height: 520px;
-    transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+            transform: scale(0.8);
     margin: -52px -52px -52px -52px;
 }
 
@@ -34,7 +40,8 @@ body {
     border: 2px solid #000;  
     background-color: #213b50;
     padding: 30px;
-    box-shadow: 5px 5px 5px #000;
+    -webkit-box-shadow: 5px 5px 5px #000;
+            box-shadow: 5px 5px 5px #000;
 }
 
 #container #calculator #display {
@@ -68,7 +75,10 @@ body {
     font-size: 20px;
     font-weight: bold;
     outline: none;
-    box-shadow: 5px 5px 5px #000000;
+    -webkit-box-shadow: 5px 5px 5px #000000;
+            box-shadow: 5px 5px 5px #000000;
+    -webkit-transition: background-color 200ms;
+    -o-transition: background-color 200ms;
     transition: background-color 200ms;
 }
   
@@ -86,18 +96,23 @@ body {
     background-color: #4e708c;
     border-color: #aaaaaa;
     border-width: 1px;
-    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+            box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 420px) and (orientation: portrait) {
     #wrapper{
         width: 286px;
         height: 286px;
-        transform: translate(-50%, -70%);
+        -webkit-transform: translate(-50%, -70%);
+            -ms-transform: translate(-50%, -70%);
+                transform: translate(-50%, -70%);
     }
 
     #container {
-        transform: scale(0.55);
+        -webkit-transform: scale(0.55);
+            -ms-transform: scale(0.55);
+                transform: scale(0.55);
         margin: -117px -117px -117px -117px;
     }
 }
@@ -106,11 +121,15 @@ body {
     #wrapper{
         width: 286px;
         height: 286px;
-        transform: translate(-50%, -45%);
+        -webkit-transform: translate(-50%, -45%);
+            -ms-transform: translate(-50%, -45%);
+                transform: translate(-50%, -45%);
     }
 
     #container {
-        transform: scale(0.55);
+        -webkit-transform: scale(0.55);
+            -ms-transform: scale(0.55);
+                transform: scale(0.55);
         margin: -117px -117px -117px -117px;
     }
 
