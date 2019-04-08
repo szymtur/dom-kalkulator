@@ -29,8 +29,8 @@ decimalKey.addEventListener('click', function() {
 for (let i=0; i<bracketKeys.length; i++) {
     bracketKeys[i].addEventListener('click', function() {
         checkDecimal();
-		checkBrackets();
-		changeFontSize();
+        checkBrackets();
+        changeFontSize();
         blockDisplayLength();
     });
 }
@@ -42,7 +42,7 @@ for (let i=0; i<operKeys.length; i++) {
         unblockAllKeys();
         checkBrackets();
         changeFontSize();
-		blockDisplayLength();
+        blockDisplayLength();
         changeToCE();
     });
 }
@@ -60,19 +60,19 @@ for (let i=0; i<numKeys.length; i++) {
 
 /* ZDARZENIA NA PRZYCISKU "CE" */
 clearKey.addEventListener('click', function() {
-	if (clearKey.value == 'ac') {
-		unblockAllKeys();
+    if (clearKey.value == 'ac') {
+        unblockAllKeys();
         allClear();
         changeToCE();
-		changeFontSize();
+        changeFontSize();
     }
-	else if (clearKey.value == 'ce') {
+    else if (clearKey.value == 'ce') {
         unblockAllKeys();
         clearEnter();
         checkDecimal();
         checkBrackets();
-		changeFontSize();
-		blockDisplayLength();
+        changeFontSize();
+        blockDisplayLength();
     }
 });
 
@@ -89,24 +89,24 @@ function blockAllKeys(display) {
 
 /* BLOKUJE WSZYSTKIE KLAWISZE (Z WYJĄTKIEM "=", ")", "CE") PO WYPISANIU WIĘCEJ NIŻ 20 ZNAKÓW */
 function blockDisplayLength() {
-	let lastChar = display.value[display.value.length-1];
+    let lastChar = display.value[display.value.length-1];
 
-	if (display.value.length >= 20) {
-		for (let i=0; i<numKeys.length; i++) {
-			numKeys[i].disabled = true;
-		}
-		for (let i=0; i<operKeys.length; i++) {
-			operKeys[i].disabled = true;
-		}
-		if (operators.indexOf(lastChar) == -1) {
-			for (let i=0; i<bracketKeys.length; i++) {
-				bracketKeys[i].disabled = true;
-			}	
-		}
-		else {
-			bracketKeys[0].disabled = true;
-		}
-	}
+    if (display.value.length >= 20) {
+        for (let i=0; i<numKeys.length; i++) {
+            numKeys[i].disabled = true;
+        }
+        for (let i=0; i<operKeys.length; i++) {
+            operKeys[i].disabled = true;
+        }
+        if (operators.indexOf(lastChar) == -1) {
+            for (let i=0; i<bracketKeys.length; i++) {
+                bracketKeys[i].disabled = true;
+            }
+        }
+        else {
+            bracketKeys[0].disabled = true;
+        }
+    }
 }
 
 
@@ -114,10 +114,10 @@ function blockDisplayLength() {
 function blockNumKeys() {
     for (let i=0; i<numKeys.length; i++) {
         numKeys[i].disabled = true;
-	}
-	for (let i=0; i<bracketKeys.length; i++) {
-		bracketKeys[i].disabled = true;
-	}
+    }
+    for (let i=0; i<bracketKeys.length; i++) {
+        bracketKeys[i].disabled = true;
+    }
 }
 
 
@@ -127,7 +127,7 @@ function checkDecimal() {
     let minusSign =  display.value.lastIndexOf('-');
     let timesSign =  display.value.lastIndexOf('*');
     let divisionSign =  display.value.lastIndexOf('/');
-    
+
     let decimalSignPosition = display.value.lastIndexOf('.');
     let signPosition = Math.max(plusSign, minusSign, timesSign, divisionSign);
 
@@ -178,14 +178,14 @@ function allClear() {
 /* ZMIENIA PRZYCISK "CE" NA "AC" */
 function changeToAC() {
     clearKey.innerText = 'AC';
-	clearKey.value = 'ac';
+    clearKey.value = 'ac';
 }
 
 
 /* ZMIENIA PRZYCISK "AC" NA "CE" */
 function changeToCE() {
     clearKey.innerText = 'CE';
-	clearKey.value = 'ce';
+    clearKey.value = 'ce';
 }
 
 
@@ -257,19 +257,19 @@ function getValue(keyVal) {
         }
         //zamienia stojący na końcu znak "." na operator " + - * / "
         if ( ('.').indexOf(lastChar) > -1) {
-            display.value = display.value.replace(/..$/, keyVal); 
+            display.value = display.value.replace(/..$/, keyVal);
         }
     }
 
     if (keyVal == '/' || keyVal == '*' || keyVal == '+' ) {
         let lastTwoChars = (display.value[display.value.length-2] + display.value[display.value.length-1]);
-        
+
         //blokuje użycie operatorów  " + - * / " po nawiasie "("
         if ( ('(').indexOf(lastChar) > -1) {
-            display.value = display.value.replace(/.$/, ''); 
+            display.value = display.value.replace(/.$/, '');
         }
         else if(('(+').indexOf(lastTwoChars) > -1){
-            display.value = display.value.replace(/..$/, '(-'); 
+            display.value = display.value.replace(/..$/, '(-');
         }
         else if(('(/').indexOf(lastTwoChars) > -1){
             display.value = display.value.replace(/..$/, '(-');
@@ -278,10 +278,10 @@ function getValue(keyVal) {
             display.value = display.value.replace(/..$/, '(-');
         }
     }
-    
+
     if (keyVal == '0') {
         let twoCharsAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
-        
+
         //blokuje zero po znaku "-"
         if (('-0').indexOf(twoCharsAfterLast) > -1) {
             display.value = display.value.replace(/.$/, '');
@@ -351,10 +351,10 @@ function getValue(keyVal) {
         }
         //dodaje znak "*" między nawias ")" i liczbę
         else if ((')').indexOf(lastChar) > -1) {
-            display.value = display.value.replace(/.$/, '*' + keyVal); 
+            display.value = display.value.replace(/.$/, '*' + keyVal);
         }
     }
-    
+
     if (keyVal == '(' ) {
         let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
@@ -381,11 +381,11 @@ function getValue(keyVal) {
     if (keyVal == ')' ) {
         //jeśli ostatnim znakiem jest "." to zamienia go na ")"
         if (('.').indexOf(lastChar) > -1) {
-            display.value = display.value.replace(/..$/, keyVal); 
+            display.value = display.value.replace(/..$/, keyVal);
         }
         //jeżeli na końcu jest operator  " + - * / " to zamienia go na ")"
         else if (operators.indexOf(lastChar) > -1) {
-            display.value = display.value.replace(/..$/, keyVal); 
+            display.value = display.value.replace(/..$/, keyVal);
         }
     }
 }
@@ -408,7 +408,7 @@ function checkBrackets() {
         bracketKeys[1].disabled = true;
         return true;
     }
-    else  {
+    else {
         bracketKeys[1].disabled = false
         return false;
     }
@@ -422,7 +422,7 @@ function result() {
     if (operators.indexOf(lastChar) > -1) {
         display.value = display.value.replace(/.$/, '');
     }
-    
+
     //sprawdza poprawność wprowadzonego ciągu znaków i zwraca wynik lub "Error"
     if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1) {
         if (checkBrackets(display.value) == true) {
@@ -457,7 +457,7 @@ function result() {
             display.value = "Error";
             blockAllKeys(display.value); 
         }
-    }   
+    }
     else {
         let result = eval(display.value);
 
@@ -471,7 +471,7 @@ function result() {
         }
         else {
             display.value = resultLength(result);
-        }  
+        }
     }
 }
 
@@ -579,7 +579,7 @@ document.addEventListener("keydown", function(event) {
     if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 27) {
         let btn = document.querySelector('.clear');
             btn.click();
-            btn.classList.add('hover');        
+            btn.classList.add('hover');
     }
 });
 
@@ -643,5 +643,5 @@ document.addEventListener("keyup", function(event) {
     }
     if (event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 27) {
         document.querySelector(".btn[value = 'ce']").classList.remove('hover');
-    }    
-});    
+    }
+});

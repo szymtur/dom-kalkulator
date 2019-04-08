@@ -81,7 +81,7 @@ body {
     -o-transition: background-color 200ms;
     transition: background-color 200ms;
 }
-  
+
 #container #calculator .btn:last-child {
     width: 205px;
     background-color: #d30000;
