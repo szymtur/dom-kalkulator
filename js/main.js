@@ -2,7 +2,7 @@ let display = document.querySelector('#display');
 let allKeys = document.querySelectorAll('.btn');
 let numKeys = document.querySelectorAll('.number');
 let operKeys = document.querySelectorAll('.operator');
-let bracketKeys = document.querySelectorAll('.bracket');
+let bracketsKeys = document.querySelectorAll('.bracket');
 let clearKey = document.querySelector('.clear');
 let resultKey = document.querySelector('.result');
 let decimalKey = document.querySelector('.btn[value = "."]');
@@ -26,8 +26,8 @@ decimalKey.addEventListener('click', function() {
 
 
 /* ZDARZENIA NA PRZYCISKACH "(" ORAZ ")" */
-for (let i=0; i<bracketKeys.length; i++) {
-    bracketKeys[i].addEventListener('click', function() {
+for (let i=0; i<bracketsKeys.length; i++) {
+    bracketsKeys[i].addEventListener('click', function() {
         checkDecimal();
         checkBrackets();
         changeFontSize();
@@ -98,13 +98,13 @@ function blockDisplayLength() {
         for (let i=0; i<operKeys.length; i++) {
             operKeys[i].disabled = true;
         }
-        if (operators.indexOf(lastChar) == -1) {
-            for (let i=0; i<bracketKeys.length; i++) {
-                bracketKeys[i].disabled = true;
+        if (operators.indexOf(lastChar) == -1 && ('.').indexOf(lastChar) == -1) {
+            for (let i=0; i<bracketsKeys.length; i++) {
+                bracketsKeys[i].disabled = true;
             }
         }
         else {
-            bracketKeys[0].disabled = true;
+            bracketsKeys[0].disabled = true;
         }
     }
 }
@@ -115,8 +115,8 @@ function blockNumKeys() {
     for (let i=0; i<numKeys.length; i++) {
         numKeys[i].disabled = true;
     }
-    for (let i=0; i<bracketKeys.length; i++) {
-        bracketKeys[i].disabled = true;
+    for (let i=0; i<bracketsKeys.length; i++) {
+        bracketsKeys[i].disabled = true;
     }
 }
 
@@ -237,7 +237,7 @@ function getValue(keyVal) {
             display.value += keyVal;
         }
         //uniemożliwia rozpoczęcie wprowadzania działania matematycznego od " ) "
-        else if(keyVal == ")") {
+        else if(keyVal == ')') {
             display.value = 0;
         }
         //zamienia defaultowe "0" z ekranu na cyfrę
@@ -301,14 +301,14 @@ function getValue(keyVal) {
         //blokuje zero po nawiasie "("
         else if (('(0').indexOf(twoCharsAfterLast) > -1) {
             display.value = display.value.replace(/.$/, '');
-        }        
+        }
         //po nawiasie ")" zamienia "0" na "*0"
         else if ((')').indexOf(lastChar) > -1) {
             display.value = display.value.replace(/.$/, '*' + keyVal + ''); 
         }
     }
 
-    if (keyVal == ".") {
+    if (keyVal == '.') {
         //po operatorach " + - * / " zamienia "." na "0."
         if ((operators).indexOf(lastChar) > -1) {
             display.value = display.value.replace(/.$/, '0' + keyVal); 
@@ -323,9 +323,9 @@ function getValue(keyVal) {
         }
     }
 
-    if (keyVal == "1" || keyVal == "2" || keyVal == "3" ||
-        keyVal == "4" || keyVal == "5" || keyVal == "6" ||
-        keyVal == "7" || keyVal == "8" || keyVal == "9"  ) {
+    if (keyVal == '1' || keyVal == '2' || keyVal == '3' ||
+        keyVal == '4' || keyVal == '5' || keyVal == '6' ||
+        keyVal == '7' || keyVal == '8' || keyVal == '9' ) {
                 
         let twoCharsAfterLast = (display.value[display.value.length-3] + display.value[display.value.length-2]);
 
@@ -405,11 +405,11 @@ function checkBrackets() {
     }
 
     if (leftBracketsCounter == rightBracketsCounter) {
-        bracketKeys[1].disabled = true;
+        bracketsKeys[1].disabled = true;
         return true;
     }
     else {
-        bracketKeys[1].disabled = false
+        bracketsKeys[1].disabled = false
         return false;
     }
 }
@@ -424,28 +424,28 @@ function result() {
     }
 
     //sprawdza poprawność wprowadzonego ciągu znaków i zwraca wynik lub "Error"
-    if (display.value.indexOf("(") > -1 || display.value.indexOf(")") > -1) {
+    if (display.value.indexOf('(') > -1 || display.value.indexOf(')') > -1) {
         if (checkBrackets(display.value) == true) {
             let regular = /(\(+)((\-|\+)?)((\d*\.\d+)|(\d+))((\-|\+|\*|\/)((\d*\.\d+)|(\d+)))*(\)+)/;
             let error = /(\+|\-|\*|\/)*(\(+\)+)/g;
 
             if (regular.test(display.value) == false) {
-                display.value = "Error";
+                display.value = 'Error';
                 blockAllKeys(display.value);
             }
             else if (error.test(display.value) == true) {
-                display.value = "Error";
+                display.value = 'Error';
                 blockAllKeys(display.value);
             }
             else {
                 let result = eval(display.value);
 
-                if (result == "Infinity" || result == "-Infinity") {
-                    display.value = "Error";
+                if (result == 'Infinity' || result == '-Infinity') {
+                    display.value = 'Error';
                     blockAllKeys(display.value);
                 }
                 else if (isNaN(result) == true) {
-                    display.value = "Error";
+                    display.value = 'Error';
                     blockAllKeys(display.value);
                 }
                 else {
@@ -454,19 +454,19 @@ function result() {
             }
         }
         else {
-            display.value = "Error";
+            display.value = 'Error';
             blockAllKeys(display.value); 
         }
     }
     else {
         let result = eval(display.value);
 
-        if (result == "Infinity" || result == "-Infinity") {
-            display.value = "Error";
+        if (result == 'Infinity' || result == '-Infinity') {
+            display.value = 'Error';
             blockAllKeys(display.value);
         }
         else if (isNaN(result) == true) {
-            display.value = "Error";
+            display.value = 'Error';
             blockAllKeys(display.value);
         }
         else {
@@ -477,7 +477,7 @@ function result() {
 
 
 /* OBSŁUGA KLAWISZY KALKULATORA ZA POMOCĄ KLAWIATURY */
-document.addEventListener("keypress", function(event) {
+document.addEventListener('keypress', function(event) {
     if (event.keyCode === 43 ) {
         let btn = document.querySelector(".btn[value = '+']");
             btn.click();
@@ -570,7 +570,7 @@ document.addEventListener("keypress", function(event) {
     }
 });
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener('keydown', function(event) {
     if (event.keyCode === 13 ) {
         let btn = document.querySelector(".btn[value = '=']");
             btn.click();
@@ -583,7 +583,7 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
-document.addEventListener("keyup", function(event) {
+document.addEventListener('keyup', function(event) {
     if (event.keyCode === 187 || event.keyCode === 107 ) {
         document.querySelector(".btn[value = '+']").classList.remove('hover');
     }
